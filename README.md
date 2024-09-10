@@ -1,0 +1,1 @@
+This is a simple implementation of Google API with external Monobank currency exchange API. The server is hosted on [this](https://yaoleksa.pythonanywhere.com/) web-address
