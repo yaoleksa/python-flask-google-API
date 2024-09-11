@@ -1,5 +1,6 @@
-import pygsheets
 import pandas as pd
+import pygsheets
+import requests
 
 client = (
     pygsheets
@@ -7,10 +8,17 @@ client = (
     .open_by_key('14nKyYCD0SOunCobchyeXjuaxAWyUpOjf_AMu6_swcrs')
 )
 
-# Create empty dataframe
-df = pd.DataFrame()
+# get currency exchange rate
+exchange_rates = requests.get('https://api.monobank.ua/bank/currency').json()
+dollar_exchange_rate = [rate for rate in exchange_rates if rate['currencyCodeA'] == 840]
+dollar = dollar_exchange_rate[0]
 
-# Create a column
-df['name'] = ['John', 'Steve', 'Sarah']
+# Create empty dataframe
+df = pd.DataFrame(data={
+    'currency_name': 'Dollar US',
+    'date': dollar['date'],
+    'rateBuy': dollar['rateBuy'],
+    'rateSell': dollar['rateSell']
+}, index=[0])
 
 client[2].set_dataframe(df, (1, 1))
