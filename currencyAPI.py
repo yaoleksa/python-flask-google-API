@@ -16,7 +16,7 @@ def hello_world():
     client = (
         pygsheets
         .authorize(service_file='./currencyapi-435306-73cfd4ea9d84.json')
-        .open_by_key('14nKyYCD0SOunCobchyeXjuaxAWyUpOjf_AMu6_swcrs')
+        .open_by_key('1kDmxlJpwOgVEO3h9AStLyVYC3cYtzy30MqV0X2WqnL8')
     )
     try:
         # get currency exchange rate
