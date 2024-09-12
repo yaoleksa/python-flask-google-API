@@ -13,7 +13,7 @@ exchange_rates = requests.get('https://api.monobank.ua/bank/currency').json()
 dollar_exchange_rate = [rate for rate in exchange_rates if rate['currencyCodeA'] == 840]
 dollar = dollar_exchange_rate[0]
 
-# Create empty dataframe
+# Create dataframe to write to sheet
 df = pd.DataFrame(data={
     'currency_name': 'Dollar US',
     'date': dollar['date'],
