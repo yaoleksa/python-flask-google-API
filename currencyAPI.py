@@ -1,5 +1,6 @@
 # A very simple Flask Hello World app for you to get started with...
 import requests
+import schedule
 import pygsheets
 
 import pandas as pd
@@ -7,6 +8,8 @@ import pandas as pd
 from requests import get
 from flask import Flask, jsonify
 from datetime import date, datetime
+
+CURRENT_TIME = date.strftime(datetime.now(), '%d.%m.%y %H:%M:%S.%f')
 
 app = Flask(__name__)
 
@@ -31,10 +34,13 @@ def hello_world():
         'date': dollar['date'],
         'rateBuy': dollar['rateBuy'],
         'rateSell': dollar['rateSell'],
-        'time': date.strftime(datetime.now(), '%d.%m.%y %H:%M:%S.%f')
+        'time': CURRENT_TIME
     }, index=[0])
 
     # write currency info
     client[2].set_dataframe(df, (1, 1))
     
     return jsonify(get('https://api.monobank.ua/bank/currency').json())
+
+print(CURRENT_TIME)
+schedule.every(5).minutes.do(hello_world)
