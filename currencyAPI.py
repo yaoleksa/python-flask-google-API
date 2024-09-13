@@ -24,7 +24,8 @@ def hello_world():
     # define POST HTTP HANDLER
     if request.method == 'POST':
         # check API key
-        if request.headers.get('X-API-Key') != os.getenv('X-API-Key'):
+        print(request.headers.get('Authorization'), os.getenv('XAPIKEY'), request.headers.get('Authorization') == os.getenv('XAPIKEY'))
+        if request.headers.get('Authorization') != os.getenv('XAPIKEY'):
             return 'Missing or invalid API key'
         today = date.today()
         update_from = datetime.strftime(today, '%Y-%m-%d')
