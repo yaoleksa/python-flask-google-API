@@ -4,38 +4,27 @@ import pygsheets
 import pandas as pd
 
 from requests import get
-from flask import Flask, jsonify
-from datetime import date, datetime
+from flask import Flask, request
+from datetime import datetime, date
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def hello_world():
 
-    # init Google Sheets client
-    client = (
-        pygsheets
-        .authorize(service_file='./currencyapi-435306-73cfd4ea9d84.json')
-        .open_by_key('1kDmxlJpwOgVEO3h9AStLyVYC3cYtzy30MqV0X2WqnL8')
-    )
-    try:
-        # get currency exchange rate
-        exchange_rates = get('https://api.monobank.ua/bank/currency').json()
-        dollar_exchange_rate = [rate for rate in exchange_rates if rate['currencyCodeA'] == 840]
-        dollar = dollar_exchange_rate[0]
-    except:
-        return "Too many requests"
-    
-    # Create dataframe to write to sheet
-    df = pd.DataFrame(data={
-        'currency_name': 'Dollar US',
-        'date': dollar['date'],
-        'rateBuy': str(dollar['rateBuy']).replace('.', ','),
-        'rateSell': str(dollar['rateSell']).replace('.', ','),
-        'time': date.strftime(datetime.now(), '%d.%m.%y %H:%M:%S.%f')
-    }, index=[0])
+    # define POST HTTP HANDLER
+    if request.method == 'POST':
+        today = date.today()
+        update_from = datetime.strftime(today, '%Y-%m-%d')
+        update_to = update_from
+        data = request.get_json()
+        if 'update_from' in data:
+            update_from = data['update_from']
+        if 'update_to' in data:
+            update_to = data['update_to']
+        update_from = str(update_from).replace('-', '')
+        update_to = str(update_to).replace('-', '')
+        print(f"https://bank.gov.ua/NBU_Exchange/exchange_site?start={update_from}&end={update_to}&valcode=usd&sort=exchangedate&order=desc&json")
+        return get(f'https://bank.gov.ua/NBU_Exchange/exchange_site?start={update_from}&end={update_to}&valcode=usd&sort=exchangedate&order=desc&json').json()
 
-    # write currency info
-    client[2].set_dataframe(df, (1, 1))
-    
-    return jsonify(exchange_rates)
+    return 'oki'
