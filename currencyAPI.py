@@ -5,7 +5,7 @@ import pygsheets
 import pandas as pd
 
 from requests import get
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from collections import defaultdict
 from datetime import datetime, date
 
@@ -24,7 +24,6 @@ def hello_world():
     # define POST HTTP HANDLER
     if request.method == 'POST':
         # check API key
-        print(request.headers.get('Authorization'), os.getenv('XAPIKEY'), request.headers.get('Authorization') == os.getenv('XAPIKEY'))
         if request.headers.get('Authorization') != os.getenv('XAPIKEY'):
             return 'Missing or invalid API key'
         today = date.today()
@@ -51,6 +50,6 @@ def hello_world():
         })
         # write to sheet
         client[2].set_dataframe(df, (1, 1))
-        return to_insert
+        return jsonify(to_insert)
 
     return 'oki'
