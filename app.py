@@ -1,9 +1,9 @@
 # A very simple API call to Google Sheet
-import os
 import pygsheets
 
 import pandas as pd
 
+from os import getenv
 from requests import get
 from flask import Flask, request, jsonify
 from collections import defaultdict
@@ -24,16 +24,16 @@ def hello_world():
     # define POST HTTP HANDLER
     if request.method == 'POST':
         # check API key
-        if request.headers.get('Authorization') != os.getenv('XAPIKEY'):
+        if request.headers.get('X-API-Key') != getenv('XAPIKEY'):
             return 'Missing or invalid API key'
         today = date.today()
         update_from = datetime.strftime(today, '%Y-%m-%d')
         update_to = update_from
-        data = request.get_json()
+        data = request.args
         if 'update_from' in data:
-            update_from = data['update_from']
+            update_from = data.get('update_from')
         if 'update_to' in data:
-            update_to = data['update_to']
+            update_to = data.get('update_to')
         update_from = str(update_from).replace('-', '')
         update_to = str(update_to).replace('-', '')
         # get currency rate for period
