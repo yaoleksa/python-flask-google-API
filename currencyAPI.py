@@ -30,8 +30,8 @@ def hello_world():
     df = pd.DataFrame(data={
         'currency_name': 'Dollar US',
         'date': dollar['date'],
-        'rateBuy': dollar['rateBuy'],
-        'rateSell': dollar['rateSell'],
+        'rateBuy': str(dollar['rateBuy']).replace('.', ','),
+        'rateSell': str(dollar['rateSell']).replace('.', ','),
         'time': date.strftime(datetime.now(), '%d.%m.%y %H:%M:%S.%f')
     }, index=[0])
 
