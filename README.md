@@ -1,2 +1,3 @@
 This is a simple implementation of Google API with external NBU currency exchange API. The server is hosted on [this](https://yaoleksa.pythonanywhere.com/) web address.
 API supports the POST HTTP method. To get currency exchange rates for the period just make a POST request to https://yaoleksa.pythonanywhere.com/?update_from=`YYYYMMDD`&update_to=`YYYYMMDD` with this API key `ffda1910-cab3-44fc-96e7-86074b8b865e` added to request header
+There is also an example of how to use the basic version of Google Sheet API. I mean how to use it via curl or some REST client.
