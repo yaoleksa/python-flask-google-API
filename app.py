@@ -12,7 +12,7 @@ from datetime import datetime, date
 # init Google Sheets client
 client = (
     pygsheets
-    .authorize(service_file='./currencyapi-435306-73cfd4ea9d84.json')
+    .authorize(service_file='./currencyapi-435306-31bce316df21.json')
     .open_by_key('1kDmxlJpwOgVEO3h9AStLyVYC3cYtzy30MqV0X2WqnL8')
 )
 
